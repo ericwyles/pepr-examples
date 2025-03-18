@@ -1,7 +1,7 @@
 {
-  "name": "my-module-a",
+  "name": "my-module-b",
   "version": "0.0.1",
-  "description": "My First Module",
+  "description": "My Module B",
   "keywords": [
     "pepr",
     "k8s",

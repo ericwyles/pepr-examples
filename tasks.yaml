@@ -26,31 +26,74 @@ tasks:
     actions:
       - task: setup:k3d-test-cluster
 
-  - name: build
-    description: Create the Module A Package
-    actions:
-      - cmd: |
-          npm ci
-          npx pepr build -z
-          ./uds zarf package create dist -o dist
-        dir: my-module-a
-
-  - name: clean
-    description: Delete built artifacts
-    actions:
-      - cmd: |
-          rm -rf dist
-          rm -rf node_modules
-        dir: my-module-a
-
-  - name: deploy
-    description: Deploy modules to existing cluster
-    actions:
-      - cmd: ./uds zarf package deploy dist/zarf-package-pepr*.zst --confirm
-        dir: my-module-a
-
   - name: apply
     description: Apply hello samples to cluster
     actions:
       - cmd: ./uds zarf tools kubectl apply -f capabilities/hello-pepr.samples.yaml
         dir: my-module-a
+
+  - name: build
+    description: Build All
+    actions:
+      - task: build-module
+        with:
+          module: my-module-a
+      - task: build-module
+        with:
+          module: my-module-b
+
+  - name: clean
+    description: Clean All
+    actions:
+      - task: clean-module
+        with:
+          module: my-module-a
+      - task: clean-module
+        with:
+          module: my-module-b
+      - cmd: rm -rf zarf-sbom
+
+  - name: deploy
+    description: Deploy All
+    actions:
+      - task: deploy-module
+        with:
+          module: my-module-a
+      - task: deploy-module
+        with:
+          module: my-module-b
+
+  - name: build-module
+    inputs:
+      module:
+        description: The module
+        default: my-module-a
+    description: Build a module
+    actions:
+      - cmd: |
+          npm ci
+          npx pepr build -z
+          ./uds zarf package create dist -o dist
+        dir: ${{ .inputs.module }}
+
+  - name: clean-module
+    inputs:
+      module:
+        description: The module
+        default: my-module-a  
+    description: Clean up build artifacts
+    actions:
+      - cmd: |
+          rm -rf dist
+          rm -rf node_modules
+        dir: ${{ .inputs.module }}
+
+  - name: deploy-module
+    inputs:
+      module:
+        description: The module
+        default: my-module-a  
+    description: Deploy a module to an existing cluster
+    actions:
+      - cmd: ./uds zarf package deploy dist/zarf-package-pepr*.zst --confirm
+        dir: ${{ .inputs.module }}
