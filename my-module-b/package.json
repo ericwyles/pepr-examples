@@ -13,8 +13,8 @@
     "node": ">=18.0.0"
   },
   "pepr": {
-    "name": "My Module A",
-    "uuid": "my-module-a",
+    "name": "My Module B",
+    "uuid": "my-module-b",
     "onError": "reject",
     "webhookTimeout": 10,
     "customLabels": {
