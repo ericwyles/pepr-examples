@@ -1,0 +1,35 @@
+# in this example I am swapping the annotations to mismatch 
+# what my pepr modules are looking for:
+# - apply the evil-a annotation in namespace module-b-validate
+# - apply the evil-b annotation in namespace module-a-validate
+# 
+# neither controller should match on this so these should be allowed
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: module-a-validate
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-evil-cm
+  namespace: module-a-validate
+  annotations:
+    evil-b: 'true' # evil-b in the 'a' namespace
+data:
+  key: ex-evil-cm-val
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: module-b-validate
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-evil-cm
+  namespace: module-b-validate
+  annotations:
+    evil-a: 'true' # evil-a in the 'b' namespace
+data:
+  key: ex-evil-cm-val

@@ -15,7 +15,7 @@
   "pepr": {
     "name": "My Module B",
     "uuid": "my-module-b",
-    "onError": "reject",
+    "onError": "audit",
     "webhookTimeout": 10,
     "customLabels": {
       "namespace": {

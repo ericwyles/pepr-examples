@@ -1,25 +1,34 @@
-# Copyright 2024 Defense Unicorns
-# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-Defense-Unicorns-Commercial
-
 includes:
-  - dependencies: ./tasks/dependencies.yaml
-  - test: ./tasks/test.yaml
-  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/create.yaml
-  - publish: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/publish.yaml
-  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/lint.yaml
-  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/pull.yaml
-  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/deploy.yaml
   - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/setup.yaml
-  - actions: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/actions.yaml
-  - badge: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/badge.yaml
-  - upgrade: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/upgrade.yaml
-  - compliance: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/compliance.yaml
 
 tasks:
   - name: default
     description: list commands
     actions:
       - cmd: ./uds run --list
+
+  - name: all
+    description: delete the cluster, rebuild, redeploy All
+    actions:
+      - task: cluster
+      - task: rebuild
+      - task: test
+
+  - name: rebuild
+    description: rebuild, redeploy All
+    actions:
+      - task: clean
+      - task: build
+      - task: deploy
+
+  - name: test
+    description: Test that the correct annotations are rejected
+    actions:
+      - cmd: ./uds zarf tools kubectl delete namespace module-a-validate
+      - cmd: ./uds zarf tools kubectl delete namespace module-b-validate
+      - cmd: ./uds zarf tools kubectl apply -f tests/module-a-b-success.yaml
+      - cmd: ./uds zarf tools kubectl apply -f tests/module-a-fail.yaml && false || true # this command should succeed if the apply fails and fail if the apply succeeds
+      - cmd: ./uds zarf tools kubectl apply -f tests/module-b-fail.yaml && false || true # this command should succeed if the apply fails and fail if the apply succeeds
 
   - name: cluster
     description: Setup k3d cluster, deploy Mattermost

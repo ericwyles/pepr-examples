@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: module-a-validate
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-evil-cm-fail
+  namespace: module-a-validate
+  annotations:
+    evil-a: 'true'
+data:
+  key: ex-evil-cm-val
