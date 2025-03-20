@@ -13,7 +13,10 @@ When(a.ConfigMap)
   .IsCreated()
   .Validate(request => {
     if (request.HasAnnotation("evil-a")) {
-      return request.Deny("Module A says: No evil-a CM annotations allowed.", 400);
+      return request.Deny(
+        "Module A says: No evil-a CM annotations allowed.",
+        400,
+      );
     }
 
     return request.Approve();
