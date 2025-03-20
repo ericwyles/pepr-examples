@@ -4,8 +4,10 @@
 
 These examples show running two different pepr modules in the same cluster, alongside the pepr module that comes with UDS Core. The two modules are:
 
-- **my-module-a** -- checks for new configmaps containing the `evil-a` annotation in the `my-module-a` namespace and rejects them
-- **my-module-b** -- checks for new configmaps containing the `evil-b` annotation in the `my-module-b` namespace and rejects them
+| Module     | Description     |
+| ------------- | ------------- |
+| my-module-a | Rejects Configmaps with the `evil-a` annotation in the `my-module-a` namespace. |
+| my-module-b | Rejects Configmaps with the `evil-b` annotation in the `my-module-b` namespace. |
 
 ### Building and Testing
 

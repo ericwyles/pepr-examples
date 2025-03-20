@@ -24,8 +24,8 @@ tasks:
   - name: test
     description: Test that the correct annotations are rejected
     actions:
-      - cmd: ./uds zarf tools kubectl delete namespace module-a-validate
-      - cmd: ./uds zarf tools kubectl delete namespace module-b-validate
+      - cmd: ./uds zarf tools kubectl delete namespace module-a-validate || true
+      - cmd: ./uds zarf tools kubectl delete namespace module-b-validate || true
       - cmd: ./uds zarf tools kubectl apply -f tests/module-a-b-success.yaml
       - cmd: ./uds zarf tools kubectl apply -f tests/module-a-fail.yaml && false || true # this command should succeed if the apply fails and fail if the apply succeeds
       - cmd: ./uds zarf tools kubectl apply -f tests/module-b-fail.yaml && false || true # this command should succeed if the apply fails and fail if the apply succeeds
