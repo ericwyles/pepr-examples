@@ -1,5 +1,5 @@
-k3d cluster delete test-cluster
-k3d cluster create test-cluster --k3s-arg '--debug@server:0' --wait
+kind delete cluster --name test-kind-cluster
+kind create cluster --name test-kind-cluster
 
 kubectl rollout status deployment -n kube-system
 
