@@ -1,5 +1,5 @@
 includes:
-  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.10.3/tasks/setup.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v1.24.10/tasks/setup.yaml
 
 tasks:
   - name: default
